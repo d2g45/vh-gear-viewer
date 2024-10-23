@@ -31,7 +31,7 @@ const GearInfo = (props: IProps) => {
         className && className
       )}
     >
-      <div className="flex flex-row items-center justify-between gap-2 rounded-sm text-center font-rajdhani text-4xl font-bold tracking-wide">
+      <div className="flex flex-row items-center justify-between gap-2 rounded-sm text-center font-rajdhani text-2xl font-bold tracking-wide md:text-4xl">
         {vaultGearType && (
           <Image
             loading="lazy"
