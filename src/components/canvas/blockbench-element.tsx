@@ -9,7 +9,7 @@ import {
   MeshStandardMaterial,
 } from "three";
 
-import { TAxis, TThree, TVaultGearElement } from "@/types/vault-gear";
+import { TThree, TVaultGearElement } from "@/types/vault-gear";
 import { prepFaceUV } from "@/utils/three";
 
 interface IBlockbenchElement {
@@ -98,19 +98,18 @@ const BlockbenchElement = (props: IBlockbenchElement) => {
     mesh.translateZ(deltaPivot[2]);
 
     if (rotation) {
-      const { angle = 0 } = rotation;
-      const { axis = "x" }: { axis: TAxis } = rotation;
+      const { angle = 0, axis } = rotation;
       const newAngle = (Math.PI / 180) * angle;
 
       switch (axis) {
         case "x":
-          mesh.rotateX(newAngle - mesh.rotation.x);
+          mesh.rotateX(newAngle);
           break;
         case "y":
-          mesh.rotateX(newAngle - mesh.rotation.y);
+          mesh.rotateY(newAngle);
           break;
         case "z":
-          mesh.rotateX(newAngle - mesh.rotation.z);
+          mesh.rotateZ(newAngle);
           break;
         default:
         // do nothing
