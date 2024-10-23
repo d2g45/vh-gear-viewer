@@ -24,10 +24,6 @@ const GearInfo = (props: IProps) => {
     }
   }, [vaultGearLabel, setAppIsFirstTime]);
 
-  if (!vaultGearLabel && !vaultGearType) {
-    return null;
-  }
-
   return (
     <div
       className={cx(
