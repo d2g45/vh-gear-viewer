@@ -1,12 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import cx from "classnames";
+import { isMobile } from "react-device-detect";
 import { FaSearch } from "react-icons/fa";
 
 import { GEAR_LABELS, GEAR_TYPES } from "@/constants/global";
 
+import Credits from "./credits";
+import Heading from "./heading";
 import MenuType from "./menu-type";
 
 interface IMenuProps {
@@ -16,6 +19,7 @@ interface IMenuProps {
 const Menu = (props: IMenuProps) => {
   const { className } = props;
   const [filter, setFilter] = useState<string>("");
+  const [hideCredits, setHideCredits] = useState<boolean>(false);
 
   const types: string[] = Object.keys(GEAR_TYPES);
 
@@ -24,6 +28,14 @@ const Menu = (props: IMenuProps) => {
     setFilter(value.trim());
   };
 
+  const handleInfoClick = () => {
+    setHideCredits(!hideCredits);
+  };
+
+  useEffect(() => {
+    setHideCredits(isMobile);
+  }, []);
+
   return (
     <div
       className={cx(
@@ -31,7 +43,16 @@ const Menu = (props: IMenuProps) => {
         className && className
       )}
     >
-      <h1 className="p-4 text-lg font-bold">Vault Hunters Gear Viewer</h1>
+      <Heading onClick={handleInfoClick} />
+
+      {
+        <Credits
+          className={cx(
+            "border-t border-neutral-700/50 bg-neutral-900/50",
+            hideCredits && "hidden"
+          )}
+        />
+      }
       <label className="grid grid-cols-[40px_1fr] grid-rows-1 border-b border-t border-neutral-700/50">
         <div className="flex w-full flex-col items-center justify-center">
           <FaSearch />
@@ -58,21 +79,6 @@ const Menu = (props: IMenuProps) => {
               />
             ))}
         </nav>
-      </div>
-
-      <div className="w-full bg-neutral-900/50 p-2 font-mono lg:text-sm">
-        This is a fan site used to expand my knowledge of Next.js and Three.js.
-        Models and images owned by Iskallia. Visit{" "}
-        <a
-          href="https://vaulthunters.gg"
-          title="Vault Hunters"
-          target="_blank"
-          rel="noopener"
-          className="text-yellow-400 underline"
-        >
-          vaulthunters.gg
-        </a>{" "}
-        and play the modpack!
       </div>
     </div>
   );
