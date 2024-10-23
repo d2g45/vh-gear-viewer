@@ -103,11 +103,8 @@ const MainScene = () => {
         <Loading className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2" />
       )}
       <Canvas shadows={true} camera={{ position: [50, 30, 10] }}>
-        {/* <gridHelper args={[2000, 2000, 0xff0000, "teal"]} /> */}
-        <ambientLight intensity={Math.PI} />
-        {/* <directionalLight intensity={Math.PI} position={[0, 10, 10]} /> */}
+        <ambientLight intensity={Math.PI} />\
         <Suspense fallback={null}>
-          {/* <PlayerModel scale={[16, 16, 16]} position={[0, -8, 0]} /> */}
           {vaultGearCurrent && materials && materials.size && (
             <BlockbenchModel
               {...vaultGearCurrent}
@@ -116,9 +113,8 @@ const MainScene = () => {
               vaultGearType={vaultGearType}
             />
           )}
+          <OrbitControls maxZoom={50} minZoom={5} enablePan={false} />
         </Suspense>
-        <OrbitControls maxZoom={50} minZoom={5} enablePan={false} />
-        {/* <Stats /> */}
         <EffectComposer>
           <Bloom
             luminanceThreshold={0}
