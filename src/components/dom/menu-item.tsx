@@ -1,11 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-
 import cx from "classnames";
 
 import useVaultGearState from "@/hooks/use-vault-gear-state";
-import { useGearQuery } from "@/hooks/vault-hunters/queries";
 import { TVaultGearOptionWithType } from "@/types/vault-gear";
 
 interface IProps extends TVaultGearOptionWithType {
@@ -15,77 +12,17 @@ interface IProps extends TVaultGearOptionWithType {
 
 const MenuItem = (props: IProps) => {
   const { label, type, value } = props;
-  const {
-    vaultGearHasLoaded,
-    vaultGearIsLoading,
-    vaultGearType,
-    vaultGearValue,
-    setVaultGearCurrent,
-    setVaultGearHasLoaded,
-    setVaultGearIsLoading,
-    setVaultGear,
-    resetVaultGear,
-  } = useVaultGearState();
-  const { data, isLoading, refetch } = useGearQuery(
-    vaultGearType,
-    vaultGearValue
-  );
-  const [disabled, setDisabled] = useState<boolean>(false);
-  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const { vaultGearType, vaultGearValue, setVaultGear, resetVaultGear } =
+    useVaultGearState();
 
-  useEffect(() => {
-    if (data && Object.keys(data).length) {
-      setVaultGearCurrent(data);
-      setIsFetching(false);
-    }
-  }, [data, setVaultGearCurrent]);
-
-  useEffect(() => {
-    let ignore = false;
-    if (!ignore) {
-      setDisabled(isLoading && vaultGearIsLoading && !vaultGearHasLoaded);
-    }
-
-    return () => {
-      ignore = true;
-    };
-  }, [isLoading, vaultGearIsLoading, vaultGearHasLoaded]);
-
-  useMemo(() => {
-    if (!isFetching) {
-      return;
-    }
-
+  const onClick = () => {
     if (type === vaultGearType && value === vaultGearValue) {
       return;
     }
-
-    setDisabled(true);
-    setVaultGearHasLoaded(false);
-    setVaultGearIsLoading(true);
     resetVaultGear();
-    setVaultGear({ label, type, value });
-    setTimeout(() => {
-      if (type && value) {
-        refetch();
-      }
-    }, 500);
-  }, [
-    isFetching,
-    label,
-    type,
-    value,
-    vaultGearType,
-    vaultGearValue,
-    refetch,
-    resetVaultGear,
-    setVaultGear,
-    setVaultGearHasLoaded,
-    setVaultGearIsLoading,
-  ]);
-
-  const onClick = () => {
-    setIsFetching(true);
+    if (label && type && value) {
+      setVaultGear({ label, type, value });
+    }
   };
 
   return (
@@ -95,7 +32,6 @@ const MenuItem = (props: IProps) => {
         vaultGearValue === value && "bg-teal-800 font-bold"
       )}
       onClick={onClick}
-      disabled={disabled}
     >
       {label}
     </button>
