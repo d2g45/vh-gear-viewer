@@ -9,7 +9,7 @@ import {
   MeshStandardMaterial,
 } from "three";
 
-import { TThree, TVaultGearElement } from "@/types/vault-gear";
+import { TAxis, TThree, TVaultGearElement } from "@/types/vault-gear";
 import { prepFaceUV } from "@/utils/three";
 
 interface IBlockbenchElement {
@@ -20,7 +20,6 @@ interface IBlockbenchElement {
 // from iskallia/item-model-renderer/lib/render/Cuboid
 const BlockbenchElement = (props: IBlockbenchElement) => {
   const meshRef = useRef<Mesh>(null);
-  // const [geometry, setGeometry] = useState<BoxGeometry | null>(null);
   const { element, loadedMaterials } = props;
   const { faces, from, rotation, to } = element;
 
@@ -65,14 +64,13 @@ const BlockbenchElement = (props: IBlockbenchElement) => {
     geometry?.setAttribute(
       "uv",
       new BufferAttribute(
-        // prettier-ignore
         new Float32Array([
-          ...prepFaceUV(faces.east?.uv ?? [0,0,0,0], materials[0]), // 0
-          ...prepFaceUV(faces.west?.uv ?? [0,0,0,0], materials[1]), // 1
-          ...prepFaceUV(faces.up?.uv ?? [0,0,0,0], materials[2]), // 2
-          ...prepFaceUV(faces.down?.uv ?? [0,0,0,0], materials[3]), // 3
-          ...prepFaceUV(faces.south?.uv ?? [0,0,0,0], materials[4]), // 4
-          ...prepFaceUV(faces.north?.uv ?? [0,0,0,0], materials[5]), // 5
+          ...prepFaceUV(faces.east?.uv ?? [0, 0, 0, 0], materials[0]), // 0
+          ...prepFaceUV(faces.west?.uv ?? [0, 0, 0, 0], materials[1]), // 1
+          ...prepFaceUV(faces.up?.uv ?? [0, 0, 0, 0], materials[2]), // 2
+          ...prepFaceUV(faces.down?.uv ?? [0, 0, 0, 0], materials[3]), // 3
+          ...prepFaceUV(faces.south?.uv ?? [0, 0, 0, 0], materials[4]), // 4
+          ...prepFaceUV(faces.north?.uv ?? [0, 0, 0, 0], materials[5]), // 5
         ]),
         2
       )
@@ -81,6 +79,10 @@ const BlockbenchElement = (props: IBlockbenchElement) => {
 
   useEffect(() => {
     const mesh = meshRef.current;
+
+    if (!mesh) {
+      return;
+    }
 
     // Create rotation
     const rotationOrigin = rotation ? rotation.origin : [0, 0, 0];
@@ -91,21 +93,24 @@ const BlockbenchElement = (props: IBlockbenchElement) => {
       rotationOrigin[2] - from[2] - depth / 2,
     ];
 
-    mesh?.translateX(deltaPivot[0]);
-    mesh?.translateY(deltaPivot[1]);
-    mesh?.translateZ(deltaPivot[2]);
+    mesh.translateX(deltaPivot[0]);
+    mesh.translateY(deltaPivot[1]);
+    mesh.translateZ(deltaPivot[2]);
 
     if (rotation) {
-      const angle = (Math.PI / 180) * rotation.angle;
-      switch (rotation.axis) {
+      const { angle = 0 } = rotation;
+      const { axis = "x" }: { axis: TAxis } = rotation;
+      const newAngle = (Math.PI / 180) * angle;
+
+      switch (axis) {
         case "x":
-          mesh?.rotateX(angle);
+          mesh.rotateX(newAngle - mesh.rotation.x);
           break;
         case "y":
-          mesh?.rotateY(angle);
+          mesh.rotateX(newAngle - mesh.rotation.y);
           break;
         case "z":
-          mesh?.rotateZ(angle);
+          mesh.rotateX(newAngle - mesh.rotation.z);
           break;
         default:
         // do nothing
@@ -124,7 +129,7 @@ const BlockbenchElement = (props: IBlockbenchElement) => {
         position={position}
         material={materials}
         geometry={geometry}
-      ></mesh>
+      />
     )
   );
 };
