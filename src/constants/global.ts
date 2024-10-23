@@ -1,5 +1,6 @@
 export const EMAIL: string = "me@danieldeguzman.com";
 export const URL: string = "https://vh-gear-viewer.d2g45.com";
+export const CACHE_TTL: number = 1000 * 60 * 15;
 
 export const META = {
   title: "Vault Hunters Gear Viewer",

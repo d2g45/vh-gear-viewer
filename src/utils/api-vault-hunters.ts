@@ -8,6 +8,7 @@ import {
 } from "axios";
 import { setupCache } from "axios-cache-interceptor";
 
+import { CACHE_TTL } from "@/constants/global";
 import {
   API_URL,
   GEAR_PATH,
@@ -26,10 +27,8 @@ const instance: AxiosInstance = Axios.create({
 });
 
 const api = setupCache(instance, {
-  // storage:
-  //   window !== undefined && !!sessionStorage
-  //     ? buildWebStorage(sessionStorage, "vh-api-axios-cache:")
-  //     : buildMemoryStorage(),
+  ttl: CACHE_TTL,
+  // storage: buildWebStorage(localStorage, "vh-api-axios-cache:"),
 });
 
 export const get = async (
