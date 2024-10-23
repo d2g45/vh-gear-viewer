@@ -1,10 +1,14 @@
+import dynamic from "next/dynamic";
 import Image from "next/image";
 
-import MainScene from "@/components/canvas/main-scene";
 import GearInfo from "@/components/dom/gear-info";
 import Menu from "@/components/dom/menu";
 
 import dark from "../../public/images/dark.webp";
+
+const MainScene = dynamic(() => import("@/components/canvas/main-scene"), {
+  ssr: false,
+});
 
 export default function Home() {
   return (
