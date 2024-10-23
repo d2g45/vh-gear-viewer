@@ -15,8 +15,7 @@ interface IProps {
 
 const GearInfo = (props: IProps) => {
   const { className } = props;
-  const { vaultGearLabel, vaultGearType, vaultGearIsLoading } =
-    useVaultGearState();
+  const { vaultGearLabel, vaultGearType } = useVaultGearState();
   const { appIsFirstTime, setAppIsFirstTime } = useAppState();
 
   useEffect(() => {
@@ -24,6 +23,10 @@ const GearInfo = (props: IProps) => {
       setAppIsFirstTime(false);
     }
   }, [vaultGearLabel, setAppIsFirstTime]);
+
+  if (!vaultGearLabel && !vaultGearType) {
+    return null;
+  }
 
   return (
     <div
@@ -44,9 +47,9 @@ const GearInfo = (props: IProps) => {
         )}
         <span>
           {appIsFirstTime && <>Select gear piece</>}
-          {!appIsFirstTime && vaultGearIsLoading && !vaultGearLabel
-            ? "Loading..."
-            : vaultGearLabel}
+          {!appIsFirstTime && (
+            <>{vaultGearLabel ? vaultGearLabel : "Loading..."}</>
+          )}
         </span>
       </div>
     </div>
