@@ -99,7 +99,7 @@ const MainScene = () => {
         <Loading className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2" />
       )}
       <Canvas shadows={true} camera={{ position: [50, 30, 10] }}>
-        <ambientLight intensity={Math.PI} />\
+        <ambientLight intensity={Math.PI} />
         <Suspense fallback={null}>
           {!isLoading && vaultGearCurrent && materials && materials.size && (
             <BlockbenchModel
