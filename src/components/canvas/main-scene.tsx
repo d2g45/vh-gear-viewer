@@ -2,10 +2,26 @@
 
 import { Suspense, useMemo, useState } from "react";
 
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Bloom, EffectComposer, Vignette } from "@react-three/postprocessing";
-import { MeshStandardMaterial } from "three";
+import {
+  Bloom,
+  EffectComposer,
+  Glitch,
+  Vignette,
+} from "@react-three/postprocessing";
+import {
+  BlendFunction,
+  GlitchMode,
+  KernelSize,
+  Resolution,
+} from "postprocessing";
+import {
+  LinearToneMapping,
+  MeshStandardMaterial,
+  SRGBColorSpace,
+  Vector2,
+} from "three";
 
 import { EXCLUDED_TEXTURE_KEYS } from "@/constants/vault-hunters";
 import useAppState from "@/hooks/use-app-state";
@@ -92,15 +108,29 @@ const MainScene = () => {
     setMaterials(null);
     loadAndSetMaterials();
   }, [vaultGearCurrent, vaultGearType]);
-
   return (
     <div className="absolute left-0 top-0 z-0 size-full">
       {!appIsFirstTime && !materials && (
         <Loading className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2" />
       )}
-      <Canvas shadows={true} camera={{ position: [50, 30, 10] }}>
-        <ambientLight intensity={Math.PI} />
+      <Canvas
+        dpr={[1, 1]}
+        shadows
+        gl={{
+          antialias: true,
+          alpha: true,
+          outputColorSpace: SRGBColorSpace,
+          toneMapping: LinearToneMapping,
+        }}
+      >
         <Suspense fallback={null}>
+          <PerspectiveCamera position={[50, 30, 10]} makeDefault />
+          <directionalLight
+            position={[0, 2, 2]}
+            color={"0xf4fdffff"}
+            intensity={2}
+          />
+          <ambientLight intensity={1.5} color={"0xfdf4fcff"} />
           {!isLoading && vaultGearCurrent && materials && materials.size && (
             <BlockbenchModel
               {...vaultGearCurrent}
@@ -112,12 +142,31 @@ const MainScene = () => {
           <OrbitControls maxZoom={50} minZoom={5} enablePan={false} />
           <EffectComposer>
             <Bloom
-              luminanceThreshold={0}
-              luminanceSmoothing={0.9}
+              luminanceThreshold={0.9}
+              luminanceSmoothing={0.025}
               height={300}
-              opacity={0.05}
+              opacity={0.075}
+              intensity={1.0}
+              mipmapBlurPass={undefined}
+              kernelSize={KernelSize.LARGE}
+              mipmapBlur={false}
+              resolutionX={Resolution.AUTO_SIZE}
+              resolutionY={Resolution.AUTO_SIZE}
             />
-            <Vignette eskil={true} offset={0} darkness={1.1} />
+            <Vignette
+              eskil={false}
+              offset={0.5}
+              darkness={0.5}
+              blendFunction={BlendFunction.NORMAL}
+            />
+            <Glitch
+              delay={new Vector2(60, 120)}
+              duration={new Vector2(0.6, 1.0)}
+              strength={new Vector2(0.3, 1.0)}
+              mode={GlitchMode.SPORADIC}
+              active
+              ratio={0.85}
+            />
           </EffectComposer>
         </Suspense>
       </Canvas>
