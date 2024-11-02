@@ -2,7 +2,7 @@
 
 import { Suspense, useMemo, useState } from "react";
 
-import { OrbitControls, PerspectiveCamera, Stats } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import {
   Bloom,
@@ -185,7 +185,6 @@ const MainScene = () => {
               active
               ratio={0.85}
             />
-            <Stats />
           </EffectComposer>
         </Suspense>
       </Canvas>
