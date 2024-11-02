@@ -2,12 +2,14 @@
 
 import { Suspense, useMemo, useState } from "react";
 
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera, Stats } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import {
   Bloom,
   EffectComposer,
+  FXAA,
   Glitch,
+  SMAA,
   Vignette,
 } from "@react-three/postprocessing";
 import {
@@ -117,7 +119,7 @@ const MainScene = () => {
         dpr={[1, 1]}
         shadows
         gl={{
-          antialias: true,
+          antialias: false,
           alpha: true,
           outputColorSpace: SRGBColorSpace,
           toneMapping: LinearToneMapping,
@@ -126,11 +128,25 @@ const MainScene = () => {
         <Suspense fallback={null}>
           <PerspectiveCamera position={[50, 30, 10]} makeDefault />
           <directionalLight
-            position={[0, 2, 2]}
+            position={[10, 10, -10]}
             color={"0xf4fdffff"}
-            intensity={2}
+            intensity={3}
+            castShadow
+            receiveShadow
           />
-          <ambientLight intensity={1.5} color={"0xfdf4fcff"} />
+          <directionalLight
+            position={[10, 10, 10]}
+            color={"0xf4fdffff"}
+            intensity={3}
+            castShadow
+            receiveShadow
+          />
+          <ambientLight
+            castShadow
+            receiveShadow
+            intensity={1.5}
+            color={"0xfdf4fcff"}
+          />
           {!isLoading && vaultGearCurrent && materials && materials.size && (
             <BlockbenchModel
               {...vaultGearCurrent}
@@ -141,6 +157,8 @@ const MainScene = () => {
           )}
           <OrbitControls maxZoom={50} minZoom={5} enablePan={false} />
           <EffectComposer>
+            <FXAA />
+            <SMAA />
             <Bloom
               luminanceThreshold={0.9}
               luminanceSmoothing={0.025}
@@ -160,13 +178,14 @@ const MainScene = () => {
               blendFunction={BlendFunction.NORMAL}
             />
             <Glitch
-              delay={new Vector2(60, 120)}
+              delay={new Vector2(360, 600)}
               duration={new Vector2(0.6, 1.0)}
               strength={new Vector2(0.3, 1.0)}
               mode={GlitchMode.SPORADIC}
               active
               ratio={0.85}
             />
+            <Stats />
           </EffectComposer>
         </Suspense>
       </Canvas>

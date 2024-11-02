@@ -128,6 +128,8 @@ const BlockbenchElement = (props: IBlockbenchElement) => {
         position={position}
         material={materials}
         geometry={geometry}
+        castShadow
+        receiveShadow
       />
     )
   );
