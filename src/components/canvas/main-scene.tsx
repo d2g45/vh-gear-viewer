@@ -129,14 +129,12 @@ const MainScene = () => {
           <PerspectiveCamera position={[50, 30, 10]} makeDefault />
           <directionalLight
             position={[10, 10, -10]}
-            color={"0xf4fdffff"}
             intensity={3}
             castShadow
             receiveShadow
           />
           <directionalLight
             position={[10, 10, 10]}
-            color={"0xf4fdffff"}
             intensity={3}
             castShadow
             receiveShadow
