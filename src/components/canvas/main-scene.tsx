@@ -139,7 +139,7 @@ const MainScene = () => {
             castShadow
             receiveShadow
           />
-          <ambientLight intensity={1.5} color={"0xfdf4fcff"} />
+          <ambientLight intensity={1.5} />
           {!isLoading && vaultGearCurrent && materials && materials.size && (
             <BlockbenchModel
               {...vaultGearCurrent}
