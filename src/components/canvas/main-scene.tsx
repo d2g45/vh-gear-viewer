@@ -128,18 +128,18 @@ const MainScene = () => {
         <Suspense fallback={null}>
           <PerspectiveCamera position={[50, 30, 10]} makeDefault />
           <directionalLight
-            position={[10, 10, -10]}
-            intensity={3}
+            position={[-10, 10, -10]}
+            intensity={1}
             castShadow
             receiveShadow
           />
           <directionalLight
             position={[10, 10, 10]}
-            intensity={3}
+            intensity={2}
             castShadow
             receiveShadow
           />
-          <ambientLight intensity={1.5} />
+          <ambientLight intensity={1.5} color={0xffffffff} />
           {!isLoading && vaultGearCurrent && materials && materials.size && (
             <BlockbenchModel
               {...vaultGearCurrent}
@@ -156,8 +156,8 @@ const MainScene = () => {
               luminanceThreshold={0.9}
               luminanceSmoothing={0.025}
               height={300}
-              opacity={0.075}
-              intensity={1.0}
+              opacity={0.25}
+              intensity={0.5}
               mipmapBlurPass={undefined}
               kernelSize={KernelSize.LARGE}
               mipmapBlur={false}
@@ -167,7 +167,7 @@ const MainScene = () => {
             <Vignette
               eskil={false}
               offset={0.5}
-              darkness={0.5}
+              darkness={1}
               blendFunction={BlendFunction.NORMAL}
             />
             <Glitch
