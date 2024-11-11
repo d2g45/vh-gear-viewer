@@ -10,14 +10,8 @@ import {
   FXAA,
   Glitch,
   SMAA,
-  Vignette,
 } from "@react-three/postprocessing";
-import {
-  BlendFunction,
-  GlitchMode,
-  KernelSize,
-  Resolution,
-} from "postprocessing";
+import { GlitchMode, KernelSize, Resolution } from "postprocessing";
 import {
   LinearToneMapping,
   MeshStandardMaterial,
@@ -119,7 +113,7 @@ const MainScene = () => {
         dpr={[1, 1]}
         shadows
         gl={{
-          antialias: false,
+          antialias: true,
           alpha: true,
           outputColorSpace: SRGBColorSpace,
           toneMapping: LinearToneMapping,
@@ -163,12 +157,6 @@ const MainScene = () => {
               mipmapBlur={false}
               resolutionX={Resolution.AUTO_SIZE}
               resolutionY={Resolution.AUTO_SIZE}
-            />
-            <Vignette
-              eskil={false}
-              offset={0.5}
-              darkness={1}
-              blendFunction={BlendFunction.NORMAL}
             />
             <Glitch
               delay={new Vector2(360, 600)}
