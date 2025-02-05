@@ -4,6 +4,10 @@ I wanted to learn more about `three.js` and `react-three-fiber` and improve my R
 
 Thanks to [iGoodie](https://github.com/iGoodie) for pointing me in the right direction and the [iskallia/item-model-renderer](https://github.com/Iskallia/item-model-renderer) repository for helping me understand how to translate Blockbench JSON to something `Three.js` can understand.
 
+## Credits
+
+Background and icon credit to kumara22
+
 Models and images owned by Iskallia and their artists. Visit [vaulthunters.gg](https://vaulthunters.gg) and play the modpack! Thank you to the team for building such a fun experience.
 
 ## Development
