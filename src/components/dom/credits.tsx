@@ -10,7 +10,8 @@ const Credits = (props: IProps) => {
   return (
     <div className={cx("w-full p-2 font-mono text-sm", className && className)}>
       This is a fan site used to expand my knowledge of Next.js and Three.js.
-      Models and images owned by Iskallia. Visit{" "}
+      Background and icon credit to kumara22. Models and images owned by Iskallia. 
+      Visit{" "}
       <a
         href="https://vaulthunters.gg"
         title="Vault Hunters"
